@@ -1,7 +1,7 @@
 import OSC from "osc-js";
 import * as THREE from "three";
 import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
-import { time } from "three/tsl";
+import { color, time } from "three/tsl";
 import { PointLight, Vector3 } from "three/webgpu";
 
 const THREADS_PARAMS = [
@@ -93,9 +93,8 @@ function main() {
       );
 
       if (threadSelected) {
-        pickHelper.pickedObject.material = new THREE.MeshPhongMaterial({
-          color: 0x000e78,
-        });
+          pickHelper.pickedObject.material.emissive = new THREE.Color(0xd62f2f);
+
       }
     });
 
