@@ -1,8 +1,9 @@
 import OSC from "osc-js";
 import * as THREE from "three";
 import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
-import { color, time } from "three/tsl";
 import { PointLight, Vector3 } from "three/webgpu";
+import * as TWEEN from "@tweenjs/tween.js";
+import { time } from "three/tsl";
 
 const THREADS_PARAMS = [
   {
@@ -93,8 +94,13 @@ function main() {
       );
 
       if (threadSelected) {
-          pickHelper.pickedObject.material.emissive = new THREE.Color(0xd62f2f);
-
+        pickHelper.pickedObject.material.emissive = new THREE.Color(0xd62f2f);
+        const baseColor = new THREE.Color(0x520509);
+        const higlightColor = new THREE.Color(0xc43535);
+        let transitionColor = new TWEEN.Tween(baseColor)
+          .to(higlightColor, 1000)
+          .onUpdate()
+          .start();
       }
     });
 
@@ -114,6 +120,7 @@ function main() {
     }
 
     requestAnimationFrame(animate);
+    TWEEN.update(time);
   }
 }
 
@@ -153,10 +160,6 @@ class PickHelper {
     }
   }
 }
-
-const osc = new OSC();
-
-function sendAction(sound, video) {}
 
 const pickPosition = { x: 0, y: 0 };
 clearPickPosition();
