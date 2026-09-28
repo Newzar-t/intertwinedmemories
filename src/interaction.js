@@ -1,3 +1,4 @@
+import OSC from "osc-js";
 import * as THREE from "three";
 import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 import { time } from "three/tsl";
@@ -153,6 +154,10 @@ class PickHelper {
     }
   }
 }
+
+const osc = new OSC();
+
+function sendAction(sound, video) {}
 
 const pickPosition = { x: 0, y: 0 };
 clearPickPosition();

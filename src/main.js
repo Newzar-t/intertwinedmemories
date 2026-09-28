@@ -1,34 +1,17 @@
 import { Value } from "three/examples/jsm/inspector/ui/Values.js";
 import "./style.css";
+import OSC from "osc-js";
 
-/* const ws = new WebSocket("ws://224.0.0.1:8080");
+const osc = new OSC();
 
-window.addEventListener("DOMContentLoaded", () => {
-  const button = document.querySelector("#playBtn");
+function main() {
+  osc.open({ host: "10.137.97.204", port: 8080 });
 
-  let value = 0;
+  function test() {
+    osc.on;
+  }
 
-  button.disabled = true;
+  document.body.addEventListener("click", test);
+}
 
-  ws.addEventListener("open", () => {
-    console.log("Connected to Chataigne");
-    button.disabled = false;
-  });
-
-  ws.addEventListener("error", (error) => {
-    console.error("WebSocket error:", error);
-  });
-
-  ws.addEventListener("close", () => {
-    console.log("WebSocket closed");
-    button.disabled = true;
-  });
-
-  button.addEventListener("click", () => {
-    value = value === 0 ? 1 : 0;
-
-    ws.send(`/modules/webSocketServer/values/number ${value}`);
-
-    console.log(`MyValue1 = ${value}`);
-  });
-}); */
+main();
