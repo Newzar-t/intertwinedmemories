@@ -38,12 +38,12 @@ function main() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
   let fogValue = { value: 0.02 };
-  scene.fog = new THREE.FogExp2(0xffffff, fogValue.value);
+  scene.fog = new THREE.FogExp2(0xffe6e6, fogValue.value);
 
   const fov = 75;
   const aspect = window.innerWidth / window.innerHeight;
   const near = 0.1;
-  const far = 120;
+  const far = 110;
 
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 40, 70);
@@ -118,18 +118,15 @@ function main() {
 
     requestAnimationFrame(animate);
 
-    gsap.to(
-      fogValue,
-      {
-        duration: 9,
-        value: 0.008,
-        onUpdate: function () {
-          scene.fog = new THREE.FogExp2(0xffffff, fogValue.value);
-        },
-        yoyo: true,
-        repeat: -1,
+    gsap.to(fogValue, {
+      duration: 9,
+      value: 0.008,
+      onUpdate: function () {
+        scene.fog = new THREE.FogExp2(0xffd1d1, fogValue.value);
       },
-    );
+      yoyo: true,
+      repeat: -1,
+    });
   }
 }
 
