@@ -1,8 +1,9 @@
 import OSC from "osc-js";
 import * as THREE from "three";
 import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
-import { color, time } from "three/tsl";
 import { PointLight, Vector3 } from "three/webgpu";
+import { time } from "three/tsl";
+import { gsap } from "gsap";
 
 const THREADS_PARAMS = [
   {
@@ -31,13 +32,13 @@ function main() {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     canvas,
-    alpha: true,
-    depthBufferType: THREE.FloatType,
   });
+  renderer.setClearColor(0x00ff00);
   renderer.shadowMap.enabled = true;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
-  scene.fog = new THREE.Fog(0xffbabd, 35, 150);
+  let fogValue = { value: 0.02 };
+  scene.fog = new THREE.FogExp2(0xffffff, fogValue.value);
 
   const fov = 75;
   const aspect = window.innerWidth / window.innerHeight;
@@ -91,10 +92,12 @@ function main() {
       const threadSelected = THREADS_PARAMS.find(
         (params) => params.identity === pickHelper.pickedObject?.name,
       );
+      const higlightColor = new THREE.Color(0xc43535);
 
       if (threadSelected) {
-          pickHelper.pickedObject.material.emissive = new THREE.Color(0xd62f2f);
-
+        pickHelper.pickedObject.material.emissive = new THREE.Color(
+          higlightColor,
+        );
       }
     });
 
@@ -114,6 +117,19 @@ function main() {
     }
 
     requestAnimationFrame(animate);
+
+    gsap.to(
+      fogValue,
+      {
+        duration: 9,
+        value: 0.008,
+        onUpdate: function () {
+          scene.fog = new THREE.FogExp2(0xffffff, fogValue.value);
+        },
+        yoyo: true,
+        repeat: -1,
+      },
+    );
   }
 }
 
@@ -153,10 +169,6 @@ class PickHelper {
     }
   }
 }
-
-const osc = new OSC();
-
-function sendAction(sound, video) {}
 
 const pickPosition = { x: 0, y: 0 };
 clearPickPosition();
