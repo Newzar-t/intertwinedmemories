@@ -5,20 +5,36 @@ import sendAction from "./message";
 
 const params = [
   {
-    name: "bowRope1",
-    link: "public/ropes/rope1.glb",
-  },
-  {
-    name: "corde5",
-    link: "public/ropes/rope2.glb",
-  },
-  {
-    name: "corde6",
-    link: "public/ropes/rope3.glb",
-  },
-  {
     name: "ropeNode",
-    link: "public/ropes/ropeNode.glb",
+    link: "public/ropeNode.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
+  },
+  {
+    name: "rope2",
+    link: "public/rope2.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
+  },
+  {
+    name: "rope1",
+    link: "public/rope1.glb",
   },
 ];
 
