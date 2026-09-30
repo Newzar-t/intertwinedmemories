@@ -4,6 +4,7 @@ import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 import { PointLight, Vector3 } from "three/webgpu";
 import { time } from "three/tsl";
 import { gsap } from "gsap";
+import sendAction from "./message";
 
 const THREADS_PARAMS = [
   {
@@ -23,24 +24,9 @@ const THREADS_PARAMS = [
   },
 ];
 
-let osc = new OSC();
 window.addEventListener("DOMContentLoaded", () => {
   main();
-  openServer();
 });
-
-function openServer() {
-  osc.open({ host: "10.137.97.204", port: 8080 });
-}
-
-function sendAction() {
-  let message = new OSC.Message(
-    "/modules/webSocketServer/values/float/10",
-    true,
-  );
-  osc.send(message);
-  console.log(message);
-}
 
 function main() {
   const canvas = document.querySelector("#c");
@@ -112,7 +98,6 @@ function main() {
       if (threadSelected) {
         pickHelper.pickedObject.material.emissive = new THREE.Color(
           higlightColor,
-          sendAction(),
         );
       }
     });
