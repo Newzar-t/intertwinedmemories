@@ -1,9 +1,13 @@
-export default async function sendAction(){
+import OSC from "osc-js";
 
-osc.open();
+const osc = new OSC();
 
+window.addEventListener("DOMContentLoaded", () => {
+  osc.open({ host: "10.137.97.204", port: 8080 });
+});
 
-  var message = new OSC.Message("/trigger");
- await osc.send(message);
-
+export default function sendAction() {
+  var message = new OSC.Message("/playHello");
+  osc.send(message);
+  console.log(message);
 }

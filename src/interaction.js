@@ -4,25 +4,7 @@ import { GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 import { PointLight, Vector3 } from "three/webgpu";
 import { time } from "three/tsl";
 import { gsap } from "gsap";
-import sendAction from "./message";
-
-const THREADS_PARAMS = [
-  {
-    model: "/cordeBasic.glb",
-    trigger: console.log("corde 1 active !"),
-    identity: "Corde1",
-  },
-  {
-    model: "/cordeRoule.glb",
-    trigger: console.log("autrecorde lol"),
-    identity: "Corde2",
-  },
-  {
-    model: "/CordeLongue.glb",
-    trigger: console.log("chdhhd"),
-    identity: "Corde3",
-  },
-];
+import all from "./rope";
 
 window.addEventListener("DOMContentLoaded", () => {
   main();
@@ -38,16 +20,16 @@ function main() {
   renderer.shadowMap.enabled = true;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
-  let fogValue = { value: 0.02 };
+  let fogValue = { value: 0.002 };
   scene.fog = new THREE.FogExp2(0xffe6e6, fogValue.value);
 
   const fov = 75;
   const aspect = window.innerWidth / window.innerHeight;
   const near = 0.1;
-  const far = 110;
+  const far = 300;
 
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 40, 70);
+  camera.position.set(0, 40, 115);
   const cameraPole = new THREE.Object3D();
   cameraPole.add(camera);
   scene.add(cameraPole);
@@ -80,112 +62,33 @@ function main() {
     return needResize;
   }
 
-  threadObject(scene, THREADS_PARAMS[0].model);
-  threadObject(scene, THREADS_PARAMS[1].model);
-  threadObject(scene, THREADS_PARAMS[2].model);
+  all.instanceRope(scene);
+  all.touchRope(scene, camera, time, canvas);
 
-  const pickHelper = new PickHelper();
+  function animate(time) {
+    time *= 0.001;
 
-  {
-    window.addEventListener("pointerdown", (event) => {
-      setPickPosition(event, canvas);
-      pickHelper.pick(pickPosition, scene, camera, time);
-      const threadSelected = THREADS_PARAMS.find(
-        (params) => params.identity === pickHelper.pickedObject?.name,
-      );
-      const higlightColor = new THREE.Color(0xc43535);
+    cameraPole.rotation.y = time * 0.1;
 
-      if (threadSelected) {
-        pickHelper.pickedObject.material.emissive = new THREE.Color(
-          higlightColor,
-        );
-      }
-    });
-
-    function animate(time) {
-      time *= 0.001;
-
-      cameraPole.rotation.y = time * 0.1;
-
-      if (resizeRenderer(renderer)) {
-        const canvas = renderer.domElement;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-      }
-      controls.update();
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+    if (resizeRenderer(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
     }
-
+    controls.update();
+    renderer.render(scene, camera);
     requestAnimationFrame(animate);
-
-    gsap.to(fogValue, {
-      duration: 9,
-      value: 0.008,
-      onUpdate: function () {
-        scene.fog = new THREE.FogExp2(0xffd1d1, fogValue.value);
-      },
-      yoyo: true,
-      repeat: -1,
-    });
   }
-}
 
-const threadObject = (scene, link) => {
-  const gltfLoader = new GLTFLoader();
-  gltfLoader.load(link, (gltf) => {
-    const root = gltf.scene;
+  requestAnimationFrame(animate);
 
-    root.traverse((child) => {
-      if (child.isMesh) {
-        child.material = new THREE.MeshPhongMaterial({
-          color: 0x520509,
-        });
-        child.receiveShadow = true;
-      }
-    });
-    scene.add(root);
+  gsap.to(fogValue, {
+    duration: 9,
+    value: 0.008,
+    onUpdate: function () {
+      scene.fog = new THREE.FogExp2(0xffd1d1, fogValue.value);
+    },
+    yoyo: true,
+    repeat: -1,
   });
-};
-
-class PickHelper {
-  constructor() {
-    this.raycaster = new THREE.Raycaster();
-    this.pickedObject = null;
-  }
-
-  pick(normalisedPosition, scene, camera, time) {
-    if (this.pickedObject) {
-      this.pickedObject = undefined;
-    }
-
-    this.raycaster.setFromCamera(normalisedPosition, camera);
-
-    const intersectedObjects = this.raycaster.intersectObjects(scene.children);
-    if (intersectedObjects.length) {
-      this.pickedObject = intersectedObjects[0].object;
-    }
-  }
-}
-
-const pickPosition = { x: 0, y: 0 };
-clearPickPosition();
-
-function getCanvasRelativePosition(event, canvas) {
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x: ((event.clientX - rect.left) * canvas.width) / rect.width,
-    y: ((event.clientY - rect.top) * canvas.height) / rect.height,
-  };
-}
-
-function setPickPosition(event, canvas) {
-  const pos = getCanvasRelativePosition(event, canvas);
-  pickPosition.x = (pos.x / canvas.width) * 2 - 1;
-  pickPosition.y = (pos.y / canvas.height) * -2 + 1;
-}
-
-function clearPickPosition() {
-  pickPosition.x = -10000;
-  pickPosition.y = -10000;
 }
