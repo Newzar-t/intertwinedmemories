@@ -6,7 +6,7 @@ import sendAction from "./message";
 const params = [
   {
     name: "ropeNode",
-    link: "public/ropeNode.glb",
+    link: "public/ropeNodeMiddle.glb",
   },
   {
     name: "rope1",
@@ -17,24 +17,24 @@ const params = [
     link: "public/rope2.glb",
   },
   {
-    name: "rope1",
-    link: "public/rope1.glb",
+    name: "rope3",
+    link: "public/rope3.glb",
   },
   {
-    name: "rope1",
-    link: "public/rope1.glb",
+    name: "rope4",
+    link: "public/rope4.glb",
   },
   {
-    name: "rope1",
-    link: "public/rope1.glb",
+    name: "rope5",
+    link: "public/rope5.glb",
   },
   {
-    name: "rope1",
-    link: "public/rope1.glb",
+    name: "rope6",
+    link: "public/rope6.glb",
   },
   {
-    name: "rope1",
-    link: "public/rope1.glb",
+    name: "rope7",
+    link: "public/rope7.glb",
   },
 ];
 
@@ -49,7 +49,6 @@ function instanceRope(scene) {
           child.material = new THREE.MeshPhongMaterial({
             color: 0x520509,
           });
-          child.receiveShadow = true;
         }
       });
       scene.add(root);
