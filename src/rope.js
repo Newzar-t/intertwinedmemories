@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import gsap from "gsap";
 import sendAction from "./message";
+import { TextureLoader } from "three/webgpu";
 
 const params = [
   {
@@ -31,20 +32,20 @@ const params = [
   {
     name: "rope4",
     link: "public/rope4.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_telephone",
+    sound: "/play_telephone",
   },
   {
     name: "rope5",
     link: "public/rope5.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_peluche",
+    sound: "/play_peluche",
   },
   {
     name: "rope6",
     link: "public/rope6.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_fleur",
+    sound: "/play_fleur",
   },
   {
     name: "rope7",
@@ -66,7 +67,13 @@ const params = [
   },
 ];
 
-function instanceRope(scene) {
+const baseColor = new THREE.Color(0x91312a);
+const trigColor = new THREE.Color(0xfc8274);
+
+async function instanceRope(scene) {
+  const textureLoader = new THREE.TextureLoader();
+  const texture = await textureLoader.loadAsync("/texturethread.jpeg");
+
   params.forEach((rope) => {
     const gltfLoader = new GLTFLoader();
     gltfLoader.load(rope.link, (gltf) => {
@@ -74,8 +81,8 @@ function instanceRope(scene) {
 
       root.traverse((child) => {
         if (child.isMesh) {
-          child.material = new THREE.MeshBasicMaterial({
-            color: 0x520509,
+          child.material = new THREE.MeshToonMaterial({
+            color: baseColor,
           });
           child.castShadow = true;
         }
@@ -86,7 +93,15 @@ function instanceRope(scene) {
 }
 
 let isRopedTouched = false;
-console.log(isRopedTouched);
+
+const fadeColor = (obj) => {
+  gsap.to(obj.material.color, {
+    r: trigColor.r,
+    g: trigColor.g,
+    b: trigColor.b,
+    duration: 4,
+  });
+};
 
 function touchRope(scene, camera, time, canvas) {
   const pickHelper = new PickHelper();
@@ -99,8 +114,8 @@ function touchRope(scene, camera, time, canvas) {
     );
 
     if (ropeSelected) {
+      fadeColor(pickHelper.pickedObject);
       isRopedTouched = true;
-      console.log(ropeSelected.name);
       sendAction(ropeSelected.msg, ropeSelected.sound);
       setTimeout(() => {
         isRopedTouched = false;
