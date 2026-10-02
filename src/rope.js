@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import gsap from "gsap";
 import sendAction from "./message";
-import { TextureLoader } from "three/webgpu";
 
 const params = [
   {
@@ -70,10 +69,7 @@ const params = [
 const baseColor = new THREE.Color(0x7a2117);
 const trigColor = new THREE.Color(0xfc8274);
 
-async function instanceRope(scene) {
-  const textureLoader = new THREE.TextureLoader();
-  const texture = await textureLoader.loadAsync("/texturethread.jpeg");
-
+function instanceRope(scene) {
   params.forEach((rope) => {
     const gltfLoader = new GLTFLoader();
     gltfLoader.load(rope.link, (gltf) => {
