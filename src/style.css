@@ -29,11 +29,16 @@ body {
   background-color: white;
 }
 
+
 h1 {
   font-family: "Crafty Girls", cursive;
   font-weight: 400;
   font-style: normal;
   font-size: 24px;
+}
+
+.pointer-events-none{
+  pointer-events: none;
 }
 
 #c {
