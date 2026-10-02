@@ -86,33 +86,33 @@ function instanceRope(scene) {
 }
 
 let isRopedTouched = false;
+console.log(isRopedTouched);
 
 function touchRope(scene, camera, time, canvas) {
   const pickHelper = new PickHelper();
   const onTouch = (event) => {
-  
-    isRopedTouched = true;
-
     setPickPosition(event, canvas);
     pickHelper.pick(pickPosition, scene, camera, time);
 
     const ropeSelected = params.find(
       (p) => p.name === pickHelper.pickedObject?.name,
     );
-    const higlightColor = new THREE.Color(0xc43535);
 
     if (ropeSelected) {
+      isRopedTouched = true;
       console.log(ropeSelected.name);
       sendAction(ropeSelected.msg, ropeSelected.sound);
+      setTimeout(() => {
+        isRopedTouched = false;
+      }, 8000);
     }
   };
 
   window.addEventListener("pointerdown", (event) => {
     !isRopedTouched && onTouch(event);
-
-    setTimeout(() => {
-      isRopedTouched = false;
-    }, 10000);
+    if (isRopedTouched === true) {
+      return;
+    }
   });
 }
 
