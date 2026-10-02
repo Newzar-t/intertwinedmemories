@@ -7,34 +7,62 @@ const params = [
   {
     name: "ropeNode",
     link: "public/ropeNodeMiddle.glb",
+    msg: "/",
+    sound: "/play_vent",
   },
   {
     name: "rope1",
     link: "public/rope1.glb",
+    msg: "/play_vent",
+    sound: "/play_vent",
   },
   {
     name: "rope2",
     link: "public/rope2.glb",
+    msg: "/play_cloche",
+    sound: "/play_vent",
   },
   {
     name: "rope3",
     link: "public/rope3.glb",
+    msg: "/play_boule",
+    sound: "/play_vent",
   },
   {
     name: "rope4",
     link: "public/rope4.glb",
+    msg: "/play_bouee",
+    sound: "/play_vent",
   },
   {
     name: "rope5",
     link: "public/rope5.glb",
+    msg: "/play_ticket",
+    sound: "/play_vent",
   },
   {
     name: "rope6",
     link: "public/rope6.glb",
+    msg: "/play_peluche",
+    sound: "/play_vent",
   },
   {
     name: "rope7",
     link: "public/rope7.glb",
+    msg: "/play_voiture",
+    sound: "/play_vent",
+  },
+  {
+    name: "rope8",
+    link: "public/rope8.glb",
+    msg: "/play_telephone",
+    sound: "/play_vent",
+  },
+  {
+    name: "rope9",
+    link: "public/rope9.glb",
+    msg: "/play_bouquet",
+    sound: "/play_vent",
   },
 ];
 
@@ -46,9 +74,10 @@ function instanceRope(scene) {
 
       root.traverse((child) => {
         if (child.isMesh) {
-          child.material = new THREE.MeshPhongMaterial({
+          child.material = new THREE.MeshBasicMaterial({
             color: 0x520509,
           });
+          child.castShadow = true;
         }
       });
       scene.add(root);
@@ -60,8 +89,8 @@ function touchRope(scene, camera, time, canvas) {
   const pickHelper = new PickHelper();
   window.addEventListener("pointerdown", (event) => {
     setPickPosition(event, canvas);
-    sendAction();
     pickHelper.pick(pickPosition, scene, camera, time);
+
     const ropeSelected = params.find(
       (p) => p.name === pickHelper.pickedObject?.name,
     );
@@ -69,9 +98,10 @@ function touchRope(scene, camera, time, canvas) {
 
     if (ropeSelected) {
       console.log(ropeSelected.name);
-      pickHelper.pickedObject.material.emissive = new THREE.Color(
+      sendAction(ropeSelected.msg, ropeSelected.sound);
+      /*       pickHelper.pickedObject.material.emissive = new THREE.Color(
         higlightColor,
-      );
+      ); */
     }
   });
 }

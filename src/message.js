@@ -2,12 +2,11 @@ import OSC from "osc-js";
 
 const osc = new OSC();
 
-window.addEventListener("DOMContentLoaded", () => {
-  osc.open({ host: "10.137.97.204", port: 8080 });
-});
+osc.open({ host: "10.137.98.221", port: 8080 });
 
-export default function sendAction() {
-  var message = new OSC.Message("/playHello");
+export default function sendAction(msgSend, msgSound) {
+  var message = new OSC.Message(msgSend);
+  var sound = new OSC.Message(msgSound);
   osc.send(message);
   console.log(message);
 }
