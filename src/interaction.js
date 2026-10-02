@@ -35,6 +35,8 @@ function main() {
   scene.add(cameraPole);
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.12;
 
   {
     const light = new THREE.AmbientLight(0x404040, 50);
@@ -62,7 +64,7 @@ function main() {
     return needResize;
   }
 
-  all.instanceRope(scene);
+  setTimeout(all.instanceRope(scene), 5000);
   all.touchRope(scene, camera, time, canvas);
 
   function animate(time) {
@@ -84,7 +86,7 @@ function main() {
 
   gsap.to(fogValue, {
     duration: 9,
-    value: 0.008,
+    value: 0.01,
     onUpdate: function () {
       scene.fog = new THREE.FogExp2(0xffd1d1, fogValue.value);
     },

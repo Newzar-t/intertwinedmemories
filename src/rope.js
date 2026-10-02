@@ -9,7 +9,7 @@ const params = [
     name: "ropeNode",
     link: "public/ropeNodeMiddle.glb",
     msg: "/",
-    sound: "/play_billet",
+    sound: "/",
   },
   {
     name: "rope1",
@@ -50,24 +50,24 @@ const params = [
   {
     name: "rope7",
     link: "public/rope7.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_bouee",
+    sound: "/play_bouee",
   },
   {
     name: "rope8",
     link: "public/rope8.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_voiture",
+    sound: "/play_voiture",
   },
   {
     name: "rope9",
     link: "public/rope9.glb",
-    msg: "/play_billet",
-    sound: "/play_billet",
+    msg: "/play_bouteille",
+    sound: "/play_bouteille",
   },
 ];
 
-const baseColor = new THREE.Color(0x91312a);
+const baseColor = new THREE.Color(0x7a2117);
 const trigColor = new THREE.Color(0xfc8274);
 
 async function instanceRope(scene) {
@@ -119,7 +119,7 @@ function touchRope(scene, camera, time, canvas) {
       sendAction(ropeSelected.msg, ropeSelected.sound);
       setTimeout(() => {
         isRopedTouched = false;
-      }, 8000);
+      }, 10000);
     }
   };
 
