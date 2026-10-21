@@ -112,7 +112,7 @@ function touchRope(scene, camera, time, canvas) {
     if (ropeSelected) {
       fadeColor(pickHelper.pickedObject);
       isRopedTouched = true;
-      sendAction(ropeSelected.msg, ropeSelected.sound);
+      sendAction(ropeSelected.msg);
       setTimeout(() => {
         isRopedTouched = false;
       }, 10000);
