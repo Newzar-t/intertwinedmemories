@@ -67,7 +67,7 @@ const params = [
 ];
 
 const baseColor = new THREE.Color(0x7a2117);
-const trigColor = new THREE.Color(0xfc8274);
+const trigColor = new THREE.Color(0xf25050);
 
 function instanceRope(scene) {
   params.forEach((rope) => {
@@ -91,16 +91,35 @@ function instanceRope(scene) {
 let isRopedTouched = false;
 
 const fadeColor = (obj) => {
+  obj.material.transparent = true;
+
+  const transparency = () => {
+    gsap.fromTo(
+      obj.material,
+      {
+        opacity: 1,
+      },
+      {
+        opacity: 0,
+        duration: 3,
+      },
+    );
+  };
+
   gsap.to(obj.material.color, {
     r: trigColor.r,
     g: trigColor.g,
     b: trigColor.b,
-    duration: 4,
+    duration: 7,
+    onComplete: function () {
+      transparency();
+    },
   });
 };
 
 function touchRope(scene, camera, time, canvas) {
   const pickHelper = new PickHelper();
+
   const onTouch = (event) => {
     setPickPosition(event, canvas);
     pickHelper.pick(pickPosition, scene, camera, time);
@@ -110,11 +129,13 @@ function touchRope(scene, camera, time, canvas) {
     );
 
     if (ropeSelected) {
-      fadeColor(pickHelper.pickedObject);
+      let ropeActive = pickHelper.pickedObject;
+      fadeColor(ropeActive);
       isRopedTouched = true;
       sendAction(ropeSelected.msg);
       setTimeout(() => {
         isRopedTouched = false;
+        scene.remove(ropeActive.parent);
       }, 10000);
     }
   };
