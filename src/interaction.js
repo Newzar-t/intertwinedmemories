@@ -35,6 +35,7 @@ function main() {
   scene.add(cameraPole);
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableZoom = false;
   controls.enableDamping = true;
   controls.dampingFactor = 0.12;
 
