@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap from "gsap"
 
 window.addEventListener("DOMContentLoaded", () => {
   let loading = document.querySelector("#loading");
