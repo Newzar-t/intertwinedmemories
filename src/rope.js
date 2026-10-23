@@ -2,6 +2,9 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import gsap from "gsap";
 import sendAction from "./message";
+import { increment } from "three/tsl";
+
+let ropeIncrement = 0;
 
 const params = [
   {
@@ -90,6 +93,15 @@ function instanceRope(scene) {
 
 let isRopedTouched = false;
 
+const finalScreen = () => {
+  let loading = document.querySelector("#finalScreen");
+  gsap.to(loading, {
+    opacity: 1,
+    display: "flex",
+    duration: 5,
+  });
+};
+
 const fadeColor = (obj) => {
   obj.material.transparent = true;
 
@@ -130,9 +142,10 @@ function touchRope(scene, camera, time, canvas) {
 
     if (ropeSelected) {
       let ropeActive = pickHelper.pickedObject;
+      ropeIncrement = ropeIncrement + 1;
       fadeColor(ropeActive);
       isRopedTouched = true;
-      sendAction(ropeSelected.msg);
+      /*  sendAction(ropeSelected.msg); */
       setTimeout(() => {
         isRopedTouched = false;
         scene.remove(ropeActive.parent);
@@ -142,6 +155,10 @@ function touchRope(scene, camera, time, canvas) {
 
   window.addEventListener("pointerdown", (event) => {
     !isRopedTouched && onTouch(event);
+
+    if (ropeIncrement >= 2) {
+      setTimeout(() => finalScreen(scene), 10000);
+    }
     if (isRopedTouched === true) {
       return;
     }
