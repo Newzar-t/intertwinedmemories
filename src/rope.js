@@ -99,6 +99,9 @@ const finalScreen = () => {
     opacity: 1,
     display: "flex",
     duration: 5,
+    onComplete: function () {
+      sendAction("play_end");
+    },
   });
 };
 
@@ -145,7 +148,7 @@ function touchRope(scene, camera, time, canvas) {
       ropeIncrement = ropeIncrement + 1;
       fadeColor(ropeActive);
       isRopedTouched = true;
-      /*  sendAction(ropeSelected.msg); */
+      sendAction(ropeSelected.msg);
       setTimeout(() => {
         isRopedTouched = false;
         scene.remove(ropeActive.parent);
