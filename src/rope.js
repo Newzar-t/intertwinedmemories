@@ -94,15 +94,21 @@ function instanceRope(scene) {
 let isRopedTouched = false;
 
 const finalScreen = () => {
-  let loading = document.querySelector("#finalScreen");
-  gsap.to(loading, {
-    opacity: 1,
-    display: "flex",
-    duration: 5,
-    onComplete: function () {
-      sendAction("play_end");
+  let finalScreen = document.querySelector("#finalScreen");
+  gsap.fromTo(
+    finalScreen,
+    {
+      opacity: 0,
+      display: "flex",
     },
-  });
+    {
+      opacity: 1,
+      duration: 3,
+      onComplete: function () {
+        sendAction("play_end");
+      },
+    },
+  );
 };
 
 const fadeColor = (obj) => {
@@ -159,8 +165,8 @@ function touchRope(scene, camera, time, canvas) {
   window.addEventListener("pointerdown", (event) => {
     !isRopedTouched && onTouch(event);
 
-    if (ropeIncrement >= 2) {
-      setTimeout(() => finalScreen(scene), 10000);
+    if (ropeIncrement >= 9) {
+      setTimeout(() => finalScreen(scene), 12000);
     }
     if (isRopedTouched === true) {
       return;
