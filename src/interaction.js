@@ -8,6 +8,10 @@ import all from "./rope";
 
 window.addEventListener("DOMContentLoaded", () => {
   main();
+  let restartBtn = document.querySelector("#restartBtn");
+  restartBtn.addEventListener("click", () => {
+    window.location.reload();
+  });
 });
 
 function main() {
